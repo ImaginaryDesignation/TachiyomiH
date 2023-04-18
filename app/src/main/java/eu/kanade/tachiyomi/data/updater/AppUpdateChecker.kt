@@ -8,6 +8,7 @@ import eu.kanade.tachiyomi.network.awaitSuccess
 import eu.kanade.tachiyomi.network.parseAs
 import eu.kanade.tachiyomi.util.system.isInstalledFromFDroid
 import kotlinx.serialization.json.Json
+import org.acra.BuildConfig
 import tachiyomi.core.preference.Preference
 import tachiyomi.core.preference.PreferenceStore
 import tachiyomi.core.util.lang.withIOContext
@@ -41,7 +42,7 @@ class AppUpdateChecker {
                         lastAppCheck.set(Date().time)
 
                         // Check if latest version is different from current version
-                        if (isNewVersion(it.version)) {
+                        if (isNewVersionX(it.version)) {
                             if (context.isInstalledFromFDroid()) {
                                 AppUpdateResult.NewUpdateFdroidInstallation
                             } else {
@@ -61,6 +62,25 @@ class AppUpdateChecker {
 
             result
         }
+    }
+
+    private fun isNewVersionX(versionTag: String) : Boolean {
+        if (versionTag != BuildConfig.VERSION_NAME) {
+            val newVersion = versionTag.split("x")
+            val currentVersion = BuildConfig.VERSION_NAME.split("x")
+            val newSemVer = newVersion[0].split(".").map { it.toInt() }
+            val oldSemVer = currentVersion[0].split(".").map { it.toInt() }
+
+            oldSemVer.mapIndexed { index, i ->
+                if (newSemVer[index] > i) {
+                    return true
+                }
+            }
+            if (newVersion[1].toInt() > currentVersion[1].toInt() ){
+                return true
+            }
+        }
+        return false
     }
 
     private fun isNewVersion(versionTag: String): Boolean {
@@ -92,9 +112,9 @@ class AppUpdateChecker {
 
 val GITHUB_REPO: String by lazy {
     if (BuildConfig.PREVIEW) {
-        "tachiyomiorg/tachiyomi-preview"
+        "ImaginaryDesignation/TachiyomiX"
     } else {
-        "tachiyomiorg/tachiyomi"
+        "ImaginaryDesignation/TachiyomiX"
     }
 }
 
