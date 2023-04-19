@@ -13,6 +13,7 @@ import eu.kanade.presentation.more.settings.Preference
 import eu.kanade.presentation.util.collectAsState
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.ui.reader.setting.OrientationType
+import eu.kanade.tachiyomi.ui.reader.setting.ReaderBottomButton
 import eu.kanade.tachiyomi.ui.reader.setting.ReaderPreferences
 import eu.kanade.tachiyomi.ui.reader.setting.ReadingModeType
 import eu.kanade.tachiyomi.util.system.isReleaseBuildType
@@ -71,6 +72,10 @@ object SettingsReaderScreen : SearchableSettings {
             getWebtoonGroup(readerPreferences = readerPref),
             getNavigationGroup(readerPreferences = readerPref),
             getActionsGroup(readerPreferences = readerPref),
+            // TX -->
+            getForkSettingsGroup(readerPreferences = readerPref),
+            getPageDownloadingGroup(readerPreferences = readerPref),
+            // TX <--
         )
     }
 
@@ -358,4 +363,94 @@ object SettingsReaderScreen : SearchableSettings {
             ),
         )
     }
+
+    // TX -->
+    @Composable
+    private fun getPageDownloadingGroup(readerPreferences: ReaderPreferences): Preference.PreferenceGroup {
+        return Preference.PreferenceGroup(
+            title = stringResource(R.string.page_downloading),
+            preferenceItems = listOf(
+                Preference.PreferenceItem.ListPreference(
+                    pref = readerPreferences.preloadSize(),
+                    title = stringResource(R.string.reader_preload_amount),
+                    subtitle = stringResource(R.string.reader_preload_amount_summary),
+                    entries = mapOf(
+                        4 to stringResource(R.string.reader_preload_amount_4_pages),
+                        6 to stringResource(R.string.reader_preload_amount_6_pages),
+                        8 to stringResource(R.string.reader_preload_amount_8_pages),
+                        10 to stringResource(R.string.reader_preload_amount_10_pages),
+                        12 to stringResource(R.string.reader_preload_amount_12_pages),
+                        14 to stringResource(R.string.reader_preload_amount_14_pages),
+                        16 to stringResource(R.string.reader_preload_amount_16_pages),
+                        20 to stringResource(R.string.reader_preload_amount_20_pages),
+                    ),
+                ),
+                Preference.PreferenceItem.ListPreference(
+                    pref = readerPreferences.readerThreads(),
+                    title = stringResource(R.string.download_threads),
+                    subtitle = stringResource(R.string.download_threads_summary),
+                    entries = List(5) { it }.associateWith { it.toString() },
+                ),
+                Preference.PreferenceItem.ListPreference(
+                    pref = readerPreferences.cacheSize(),
+                    title = stringResource(R.string.reader_cache_size),
+                    subtitle = stringResource(R.string.reader_cache_size_summary),
+                    entries = mapOf(
+                        "50" to "50 MB",
+                        "75" to "75 MB",
+                        "100" to "100 MB",
+                        "150" to "150 MB",
+                        "250" to "250 MB",
+                        "500" to "500 MB",
+                        "750" to "750 MB",
+                        "1000" to "1 GB",
+                        "1500" to "1.5 GB",
+                        "2000" to "2 GB",
+                        "2500" to "2.5 GB",
+                        "3000" to "3 GB",
+                        "3500" to "3.5 GB",
+                        "4000" to "4 GB",
+                        "4500" to "4.5 GB",
+                        "5000" to "5 GB",
+                    ),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = readerPreferences.aggressivePageLoading(),
+                    title = stringResource(R.string.aggressively_load_pages),
+                    subtitle = stringResource(R.string.aggressively_load_pages_summary),
+                ),
+            ),
+        )
+    }
+
+    @Composable
+    private fun getForkSettingsGroup(readerPreferences: ReaderPreferences): Preference.PreferenceGroup {
+        return Preference.PreferenceGroup(
+            title = stringResource(R.string.pref_category_fork),
+            preferenceItems = listOf(
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = readerPreferences.readerInstantRetry(),
+                    title = stringResource(R.string.skip_queue_on_retry),
+                    subtitle = stringResource(R.string.skip_queue_on_retry_summary),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = readerPreferences.preserveReadingPosition(),
+                    title = stringResource(R.string.preserve_reading_position),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = readerPreferences.useAutoWebtoon(),
+                    title = stringResource(R.string.auto_webtoon_mode),
+                    subtitle = stringResource(R.string.auto_webtoon_mode_summary),
+                ),
+                Preference.PreferenceItem.MultiSelectListPreference(
+                    pref = readerPreferences.readerBottomButtons(),
+                    title = stringResource(R.string.reader_bottom_buttons),
+                    subtitle = stringResource(R.string.reader_bottom_buttons_summary),
+                    entries = ReaderBottomButton.values()
+                        .associate { it.value to stringResource(it.stringRes) },
+                ),
+            ),
+        )
+    }
+    // TX <--
 }
