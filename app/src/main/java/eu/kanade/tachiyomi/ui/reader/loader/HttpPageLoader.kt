@@ -6,6 +6,7 @@ import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.ui.reader.model.ReaderChapter
 import eu.kanade.tachiyomi.ui.reader.model.ReaderPage
+import eu.kanade.tachiyomi.ui.reader.setting.ReaderPreferences
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,9 @@ class HttpPageLoader(
     private val chapter: ReaderChapter,
     private val source: HttpSource,
     private val chapterCache: ChapterCache = Injekt.get(),
+    // TX -->
+    private val readerPreferences: ReaderPreferences = Injekt.get(),
+    // TX <--
 ) : PageLoader() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -40,9 +44,16 @@ class HttpPageLoader(
      */
     private val queue = PriorityBlockingQueue<PriorityPage>()
 
-    private val preloadSize = 4
+//    private val preloadSize = 4
+
+    // SY -->
+    private val preloadSize = readerPreferences.preloadSize().get()
+    // SY <--
 
     init {
+        // TX -->
+        repeat(readerPreferences.readerThreads().get()) {
+            // TX <--
         scope.launchIO {
             flow {
                 while (true) {
@@ -54,6 +65,9 @@ class HttpPageLoader(
                     _loadPage(it)
                 }
         }
+            // TX -->
+        }
+        // TX <--
     }
 
     /**
@@ -94,10 +108,24 @@ class HttpPageLoader(
             }
             source.getPageList(chapter.chapter)
         }
-        return pages.mapIndexed { index, page ->
+//        return pages.mapIndexed { index, page ->
+//            // Don't trust sources and use our own indexing
+//            ReaderPage(index, page.url, page.imageUrl)
+//        }
+        // TX -->
+        val rp = pages.mapIndexed { index, page ->
             // Don't trust sources and use our own indexing
             ReaderPage(index, page.url, page.imageUrl)
         }
+        if (readerPreferences.aggressivePageLoading().get()) {
+            rp.forEach {
+                if (it.status == Page.State.QUEUE) {
+                    queue.offer(PriorityPage(it, 0))
+                }
+            }
+        }
+        return rp
+        // TX <--
     }
 
     /**
@@ -213,4 +241,14 @@ class HttpPageLoader(
             }
         }
     }
+
+    // TX -->
+    fun boostPage(page: ReaderPage) {
+        if (page.status == Page.State.QUEUE) {
+            scope.launchIO {
+                loadPage(page)
+            }
+        }
+    }
+    // TX <--
 }
