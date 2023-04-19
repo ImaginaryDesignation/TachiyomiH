@@ -82,7 +82,7 @@ class App : Application(), DefaultLifecycleObserver, ImageLoaderFactory {
         Injekt.importModule(PreferenceModule(this))
         Injekt.importModule(DomainModule())
 
-        //setupAcra()
+        // setupAcra()
         setupNotificationChannels()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)

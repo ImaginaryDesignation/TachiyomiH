@@ -8,7 +8,6 @@ import eu.kanade.tachiyomi.network.awaitSuccess
 import eu.kanade.tachiyomi.network.parseAs
 import eu.kanade.tachiyomi.util.system.isInstalledFromFDroid
 import kotlinx.serialization.json.Json
-import org.acra.BuildConfig
 import tachiyomi.core.preference.Preference
 import tachiyomi.core.preference.PreferenceStore
 import tachiyomi.core.util.lang.withIOContext
@@ -64,7 +63,7 @@ class AppUpdateChecker {
         }
     }
 
-    private fun isNewVersionX(versionTag: String) : Boolean {
+    private fun isNewVersionX(versionTag: String): Boolean {
         if (versionTag != BuildConfig.VERSION_NAME) {
             val newVersion = versionTag.split("x")
             val currentVersion = BuildConfig.VERSION_NAME.split("x")
@@ -76,7 +75,7 @@ class AppUpdateChecker {
                     return true
                 }
             }
-            if (newVersion[1].toInt() > currentVersion[1].toInt() ){
+            if (newVersion[1].toInt() > currentVersion[1].toInt()) {
                 return true
             }
         }
