@@ -124,19 +124,19 @@ class ReaderPreferences(
 
     fun preserveReadingPosition() = preferenceStore.getBoolean("eh_preserve_reading_position", false)
 
-    fun preloadSize() = preferenceStore.getInt("eh_preload_size", 10)
+    fun preloadSize() = preferenceStore.getInt("eh_preload_size", 4)
 
     fun useAutoWebtoon() = preferenceStore.getBoolean("eh_use_auto_webtoon", true)
 
     fun readerBottomButtons() = preferenceStore.getStringSet("reader_bottom_buttons", ReaderBottomButton.BUTTONS_DEFAULTS)
 
-    fun readerThreads() = preferenceStore.getInt("eh_reader_threads", 2)
+    fun readerThreads() = preferenceStore.getInt("eh_reader_threads", 3)
 
     fun readerInstantRetry() = preferenceStore.getBoolean("eh_reader_instant_retry", true)
 
-    fun aggressivePageLoading() = preferenceStore.getBoolean("eh_aggressive_page_loading", false)
+    fun aggressivePageLoading() = preferenceStore.getBoolean("eh_aggressive_page_loading", true)
 
-    fun cacheSize() = preferenceStore.getString("eh_cache_size", "75")
+    fun cacheSize() = preferenceStore.getString("eh_cache_size", "500")
 
     // TX <--
 

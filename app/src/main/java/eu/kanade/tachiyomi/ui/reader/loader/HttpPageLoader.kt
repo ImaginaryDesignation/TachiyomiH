@@ -54,17 +54,17 @@ class HttpPageLoader(
         // TX -->
         repeat(readerPreferences.readerThreads().get()) {
             // TX <--
-        scope.launchIO {
-            flow {
-                while (true) {
-                    emit(runInterruptible { queue.take() }.page)
+            scope.launchIO {
+                flow {
+                    while (true) {
+                        emit(runInterruptible { queue.take() }.page)
+                    }
                 }
+                    .filter { it.status == Page.State.QUEUE }
+                    .collect {
+                        _loadPage(it)
+                    }
             }
-                .filter { it.status == Page.State.QUEUE }
-                .collect {
-                    _loadPage(it)
-                }
-        }
             // TX -->
         }
         // TX <--
