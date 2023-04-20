@@ -11,7 +11,7 @@ class BasePreferences(
     private val preferenceStore: PreferenceStore,
 ) {
 
-    fun confirmExit() = preferenceStore.getBoolean("pref_confirm_exit", false)
+    fun confirmExit() = preferenceStore.getBoolean("pref_confirm_exit", true)
 
     fun downloadedOnly() = preferenceStore.getBoolean("pref_downloaded_only", false)
 
@@ -19,7 +19,8 @@ class BasePreferences(
 
     fun extensionInstaller() = ExtensionInstallerPreference(context, preferenceStore)
 
-    fun acraEnabled() = preferenceStore.getBoolean("acra.enable", isPreviewBuildType || isReleaseBuildType)
+//    fun acraEnabled() = preferenceStore.getBoolean("acra.enable", isPreviewBuildType || isReleaseBuildType)
+    fun acraEnabled() = preferenceStore.getBoolean("acra.enable", false)
 
     enum class ExtensionInstaller(val titleResId: Int) {
         LEGACY(R.string.ext_installer_legacy),
