@@ -952,4 +952,7 @@
     <string name="pref_crop_borders_pager">Crop borders Pager</string>
     <string name="pref_crop_borders_continuous_vertical">Crop borders Continuous Vertical</string>
     <string name="pref_crop_borders_webtoon">Crop borders Webtoon</string>
+    <string name="starting_screen">Start screen</string>
+    <string name="library">Library</string>
+    <string name="updates">Updates</string>
 </resources>

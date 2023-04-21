@@ -37,6 +37,16 @@ object SettingsGeneralScreen : SearchableSettings {
         val prefs = remember { Injekt.get<BasePreferences>() }
         val libraryPrefs = remember { Injekt.get<LibraryPreferences>() }
         return mutableListOf<Preference>().apply {
+            val context = LocalContext.current
+            val screens = remember { getStartScreens(context) }
+            add(
+                Preference.PreferenceItem.ListPreference(
+                    pref = prefs.startScreen(),
+                    title = stringResource(R.string.starting_screen),
+                    entries = screens,
+                ),
+            )
+
             add(
                 Preference.PreferenceItem.SwitchPreference(
                     pref = libraryPrefs.newShowUpdatesCount(),
@@ -51,7 +61,6 @@ object SettingsGeneralScreen : SearchableSettings {
                 ),
             )
 
-            val context = LocalContext.current
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 add(
                     Preference.PreferenceItem.TextPreference(
@@ -67,7 +76,11 @@ object SettingsGeneralScreen : SearchableSettings {
             }
 
             val langs = remember { getLangs(context) }
-            var currentLanguage by remember { mutableStateOf(AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag() ?: "") }
+            var currentLanguage by remember {
+                mutableStateOf(
+                    AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag() ?: "",
+                )
+            }
             add(
                 Preference.PreferenceItem.BasicListPreference(
                     value = currentLanguage,
@@ -114,5 +127,14 @@ object SettingsGeneralScreen : SearchableSettings {
         langs.add(0, Pair("", context.getString(R.string.label_default)))
 
         return langs.toMap()
+    }
+
+    private fun getStartScreens(context: Context): Map<String, String> {
+        return mapOf(
+            "0" to context.resources.getString(R.string.label_library),
+            "1" to context.resources.getString(R.string.label_recent_updates),
+            "2" to context.resources.getString(R.string.history),
+            "3" to context.resources.getString(R.string.browse),
+        )
     }
 }

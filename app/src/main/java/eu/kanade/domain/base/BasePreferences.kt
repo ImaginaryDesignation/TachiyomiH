@@ -2,8 +2,6 @@ package eu.kanade.domain.base
 
 import android.content.Context
 import eu.kanade.tachiyomi.R
-import eu.kanade.tachiyomi.util.system.isPreviewBuildType
-import eu.kanade.tachiyomi.util.system.isReleaseBuildType
 import tachiyomi.core.preference.PreferenceStore
 
 class BasePreferences(
@@ -21,6 +19,8 @@ class BasePreferences(
 
 //    fun acraEnabled() = preferenceStore.getBoolean("acra.enable", isPreviewBuildType || isReleaseBuildType)
     fun acraEnabled() = preferenceStore.getBoolean("acra.enable", false)
+
+    fun startScreen() = preferenceStore.getString("start_screen", "0")
 
     enum class ExtensionInstaller(val titleResId: Int) {
         LEGACY(R.string.ext_installer_legacy),
