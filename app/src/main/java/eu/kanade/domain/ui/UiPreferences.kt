@@ -34,6 +34,8 @@ class UiPreferences(
 
     fun tabletUiMode() = preferenceStore.getEnum("tablet_ui_mode", TabletUiMode.AUTOMATIC)
 
+    fun hideBottomNavLabels() = preferenceStore.getBoolean("hide_bottom_bar_labels", false)
+
     companion object {
         fun dateFormat(format: String): DateFormat = when (format) {
             "" -> DateFormat.getDateInstance(DateFormat.SHORT)

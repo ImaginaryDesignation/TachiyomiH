@@ -42,7 +42,24 @@ object SettingsAppearanceScreen : SearchableSettings {
         return listOf(
             getThemeGroup(context = context, uiPreferences = uiPreferences),
             getDisplayGroup(context = context, uiPreferences = uiPreferences),
+            getNavigationGroup(uiPreferences = uiPreferences),
             getTimestampGroup(uiPreferences = uiPreferences),
+        )
+    }
+
+    @Composable
+    private fun getNavigationGroup(
+        uiPreferences: UiPreferences,
+    ): Preference.PreferenceGroup {
+        val hideNavLabel = uiPreferences.hideBottomNavLabels()
+        return Preference.PreferenceGroup(
+            title = stringResource(R.string.pref_reader_navigation),
+            preferenceItems = listOf(
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = hideNavLabel,
+                    title = stringResource(R.string.pref_hide_bottom_nav_labels),
+                ),
+            ),
         )
     }
 

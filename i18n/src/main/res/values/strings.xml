@@ -955,4 +955,5 @@
     <string name="starting_screen">Start screen</string>
     <string name="library">Library</string>
     <string name="updates">Updates</string>
+    <string name="pref_hide_bottom_nav_labels">Hide bottom navigation labels</string>
 </resources>
