@@ -156,6 +156,9 @@ object SettingsLibraryScreen : SearchableSettings {
                     title = stringResource(R.string.pref_library_update_interval),
                     entries = mapOf(
                         0 to stringResource(R.string.update_never),
+                        5 to stringResource(R.string.update_5hour),
+                        7 to stringResource(R.string.update_7hour),
+                        9 to stringResource(R.string.update_9hour),
                         12 to stringResource(R.string.update_12hour),
                         24 to stringResource(R.string.update_24hour),
                         48 to stringResource(R.string.update_48hour),

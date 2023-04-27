@@ -956,4 +956,8 @@
     <string name="library">Library</string>
     <string name="updates">Updates</string>
     <string name="pref_hide_bottom_nav_labels">Hide bottom navigation labels</string>
+
+    <string name="update_5hour">Every 5 hours</string>
+    <string name="update_7hour">Every 7 hours</string>
+    <string name="update_9hour">Every 9 hours</string>
 </resources>
