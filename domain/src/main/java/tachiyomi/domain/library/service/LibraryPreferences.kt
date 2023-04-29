@@ -118,6 +118,12 @@ class LibraryPreferences(
 
     // endregion
 
+    fun showLibraryUpdateErrorNotification() = preferenceStore.getBoolean("show_library_update_error_notifications", true)
+
+    fun showLibraryUpdateWarningNotification() = preferenceStore.getBoolean("show_library_update_warning_notification", false)
+
+    fun showLibraryUpdateSkippedNotification() = preferenceStore.getBoolean("show_library_update_skipped_notification", true)
+
     companion object {
         const val DEVICE_ONLY_ON_WIFI = "wifi"
         const val DEVICE_NETWORK_NOT_METERED = "network_not_metered"

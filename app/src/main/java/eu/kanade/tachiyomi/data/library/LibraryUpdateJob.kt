@@ -204,7 +204,7 @@ class LibraryUpdateJob(private val context: Context, workerParams: WorkerParamet
             .groupBy { it.manga.source }
             .filterKeys { sourceManager.get(it) !is UnmeteredSource }
             .maxOfOrNull { it.value.size } ?: 0
-        if (maxUpdatesFromSource > MANGA_PER_SOURCE_QUEUE_WARNING_THRESHOLD) {
+        if (maxUpdatesFromSource > MANGA_PER_SOURCE_QUEUE_WARNING_THRESHOLD && libraryPreferences.showLibraryUpdateWarningNotification().get()) {
             notifier.showQueueSizeWarningNotification()
         }
     }
@@ -311,12 +311,15 @@ class LibraryUpdateJob(private val context: Context, workerParams: WorkerParamet
 
         if (failedUpdates.isNotEmpty()) {
             val errorFile = writeErrorFile(failedUpdates)
-            notifier.showUpdateErrorNotification(
-                failedUpdates.size,
-                errorFile.getUriCompat(context),
-            )
+            if(libraryPreferences.showLibraryUpdateErrorNotification().get()) {
+                notifier.showUpdateErrorNotification(
+                    failedUpdates.size,
+                    errorFile.getUriCompat(context),
+                )
+            }
         }
-        if (skippedUpdates.isNotEmpty()) {
+
+        if (skippedUpdates.isNotEmpty() && libraryPreferences.showLibraryUpdateSkippedNotification().get()) {
             notifier.showUpdateSkippedNotification(skippedUpdates.size)
         }
     }

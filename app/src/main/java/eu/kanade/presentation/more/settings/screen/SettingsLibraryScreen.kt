@@ -58,6 +58,7 @@ object SettingsLibraryScreen : SearchableSettings {
         return mutableListOf(
             getCategoriesGroup(LocalNavigator.currentOrThrow, allCategories, libraryPreferences),
             getGlobalUpdateGroup(allCategories, libraryPreferences),
+            getLibraryUpdateNotificationsGroup(libraryPreferences),
         )
     }
 
@@ -111,6 +112,30 @@ object SettingsLibraryScreen : SearchableSettings {
                     },
                 ),
             ),
+        )
+    }
+
+    @Composable
+    private fun getLibraryUpdateNotificationsGroup(libraryPreferences: LibraryPreferences):Preference.PreferenceGroup{
+        return Preference.PreferenceGroup(
+            title = stringResource(id = R.string.pref_library_update_notifications),
+            preferenceItems = listOf(
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = libraryPreferences.showLibraryUpdateSkippedNotification(),
+                    title = stringResource(R.string.pref_library_updates_skipped_notification),
+                    subtitle = stringResource(R.string.pref_library_updates_skipped_notification_summary),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = libraryPreferences.showLibraryUpdateWarningNotification(),
+                    title = stringResource(R.string.pref_library_update_warning_notification),
+                    subtitle = stringResource(R.string.pref_library_update_warning_notification_summary),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = libraryPreferences.showLibraryUpdateErrorNotification(),
+                    title = stringResource(R.string.pref_library_update_error_notification),
+                    subtitle = stringResource(R.string.pref_library_update_error_notification_summary),
+                ),
+            )
         )
     }
 

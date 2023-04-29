@@ -960,4 +960,12 @@
     <string name="update_5hour">Every 5 hours</string>
     <string name="update_7hour">Every 7 hours</string>
     <string name="update_9hour">Every 9 hours</string>
+
+    <string name="pref_library_update_notifications">Library update notifications</string>
+    <string name="pref_library_updates_skipped_notification">Show number of library updates skipped</string>
+    <string name="pref_library_updates_skipped_notification_summary">Show notification with number of mangas skipped during library update</string>
+    <string name="pref_library_update_error_notification">Show library update warning notification</string>
+    <string name="pref_library_update_error_notification_summary">Show warning notification when number of manga per source in update queue exceeds 60</string>
+    <string name="pref_library_update_warning_notification">Show library update error notification</string>
+    <string name="pref_library_update_warning_notification_summary">Show notification when errors occur during library update</string>
 </resources>
