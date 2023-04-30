@@ -66,6 +66,7 @@ class UpdatesScreenModel(
     val events: Flow<Event> = _events.receiveAsFlow()
 
     val lastUpdated by libraryPreferences.libraryUpdateLastTimestamp().asState(coroutineScope)
+    val updateInterval by libraryPreferences.libraryUpdateInterval().asState(coroutineScope)
     val relativeTime by uiPreferences.relativeTime().asState(coroutineScope)
 
     // First and last selected index in list

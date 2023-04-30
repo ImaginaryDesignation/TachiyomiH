@@ -968,4 +968,6 @@
     <string name="pref_library_update_error_notification_summary">Show warning notification when number of manga per source in update queue exceeds 60</string>
     <string name="pref_library_update_warning_notification">Show library update error notification</string>
     <string name="pref_library_update_warning_notification_summary">Show notification when errors occur during library update</string>
+
+    <string name="updates_next_update_info">Next library update: %s</string>
 </resources>

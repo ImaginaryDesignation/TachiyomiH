@@ -44,6 +44,7 @@ fun UpdateScreen(
     state: UpdatesState,
     snackbarHostState: SnackbarHostState,
     lastUpdated: Long,
+    updateInterval: Int,
     relativeTime: Int,
     onClickCover: (UpdatesItem) -> Unit,
     onSelectAll: (Boolean) -> Unit,
@@ -112,6 +113,9 @@ fun UpdateScreen(
                     ) {
                         if (lastUpdated > 0L) {
                             updatesLastUpdatedItem(lastUpdated)
+                        }
+                        if (updateInterval > 0) {
+                            updatesNextUpdateItem(lastUpdated, updateInterval)
                         }
 
                         updatesUiItems(

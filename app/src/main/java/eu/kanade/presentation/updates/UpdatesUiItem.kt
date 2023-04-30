@@ -80,6 +80,29 @@ internal fun LazyListScope.updatesLastUpdatedItem(
     }
 }
 
+internal fun LazyListScope.updatesNextUpdateItem(
+    lastUpdated: Long,
+    updateInterval: Int,
+) {
+    item(key = "updates-nextUpdate") {
+        val time = remember(lastUpdated, updateInterval) {
+            val now = Date().time
+            DateUtils.getRelativeTimeSpanString((lastUpdated + (updateInterval * 60 * 60 * 1000)), now, DateUtils.MINUTE_IN_MILLIS)
+        }
+
+        Box(
+            modifier = Modifier
+                .animateItemPlacement()
+                .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.small),
+        ) {
+            Text(
+                text = stringResource(R.string.updates_next_update_info, time),
+                fontStyle = FontStyle.Italic,
+            )
+        }
+    }
+}
+
 internal fun LazyListScope.updatesUiItems(
     uiModels: List<UpdatesUiModel>,
     selectionMode: Boolean,
