@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -66,7 +65,7 @@ internal fun LazyListScope.updatesLastUpdatedItem(
         Box(
             modifier = Modifier
                 .animateItemPlacement()
-                .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.small),
+                .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.tiny),
         ) {
             Text(
                 text = if (time.isNullOrEmpty()) {
@@ -93,7 +92,7 @@ internal fun LazyListScope.updatesNextUpdateItem(
         Box(
             modifier = Modifier
                 .animateItemPlacement()
-                .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.small),
+                .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.tiny),
         ) {
             Text(
                 text = stringResource(R.string.updates_next_update_info, time),
