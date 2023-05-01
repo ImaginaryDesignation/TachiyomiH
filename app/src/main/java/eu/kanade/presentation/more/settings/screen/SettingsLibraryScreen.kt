@@ -116,7 +116,7 @@ object SettingsLibraryScreen : SearchableSettings {
     }
 
     @Composable
-    private fun getLibraryUpdateNotificationsGroup(libraryPreferences: LibraryPreferences):Preference.PreferenceGroup{
+    private fun getLibraryUpdateNotificationsGroup(libraryPreferences: LibraryPreferences): Preference.PreferenceGroup  {
         return Preference.PreferenceGroup(
             title = stringResource(id = R.string.pref_library_update_notifications),
             preferenceItems = listOf(
@@ -135,7 +135,7 @@ object SettingsLibraryScreen : SearchableSettings {
                     title = stringResource(R.string.pref_library_update_error_notification),
                     subtitle = stringResource(R.string.pref_library_update_error_notification_summary),
                 ),
-            )
+            ),
         )
     }
 

@@ -311,7 +311,7 @@ class LibraryUpdateJob(private val context: Context, workerParams: WorkerParamet
 
         if (failedUpdates.isNotEmpty()) {
             val errorFile = writeErrorFile(failedUpdates)
-            if(libraryPreferences.showLibraryUpdateErrorNotification().get()) {
+            if (libraryPreferences.showLibraryUpdateErrorNotification().get()) {
                 notifier.showUpdateErrorNotification(
                     failedUpdates.size,
                     errorFile.getUriCompat(context),
