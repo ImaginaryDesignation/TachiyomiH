@@ -84,8 +84,8 @@ object HomeScreen : Screen() {
         val preferences = remember { Injekt.get<BasePreferences>() }
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
-        val hideNavLabels by remember {
-            Injekt.get<UiPreferences>().hideBottomNavLabels().asState(scope)
+        val showNavLabels by remember {
+            Injekt.get<UiPreferences>().showBottomNavLabels().asState(scope)
         }
         TabNavigator(
             tab = when (preferences.startScreen().get()) {
@@ -103,7 +103,7 @@ object HomeScreen : Screen() {
                         if (isTabletUi()) {
                             NavigationRail {
                                 tabs.fastForEach {
-                                    NavigationRailItem(it, hideNavLabels)
+                                    NavigationRailItem(it, showNavLabels)
                                 }
                             }
                         }
@@ -120,7 +120,7 @@ object HomeScreen : Screen() {
                             ) {
                                 NavigationBar {
                                     tabs.fastForEach {
-                                        NavigationBarItem(it, hideNavLabels)
+                                        NavigationBarItem(it, showNavLabels)
                                     }
                                 }
                             }
@@ -188,7 +188,7 @@ object HomeScreen : Screen() {
     }
 
     @Composable
-    private fun RowScope.NavigationBarItem(tab: eu.kanade.presentation.util.Tab, hideNavLabels: Boolean) {
+    private fun RowScope.NavigationBarItem(tab: eu.kanade.presentation.util.Tab, showNavLabels: Boolean) {
         val tabNavigator = LocalTabNavigator.current
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
@@ -211,12 +211,12 @@ object HomeScreen : Screen() {
                     overflow = TextOverflow.Ellipsis,
                 )
             },
-            alwaysShowLabel = hideNavLabels,
+            alwaysShowLabel = showNavLabels,
         )
     }
 
     @Composable
-    fun NavigationRailItem(tab: eu.kanade.presentation.util.Tab, hideNavLabels: Boolean) {
+    fun NavigationRailItem(tab: eu.kanade.presentation.util.Tab, showNavLabels: Boolean) {
         val tabNavigator = LocalTabNavigator.current
         val navigator = LocalNavigator.currentOrThrow
         val scope = rememberCoroutineScope()
@@ -239,7 +239,7 @@ object HomeScreen : Screen() {
                     overflow = TextOverflow.Ellipsis,
                 )
             },
-            alwaysShowLabel = hideNavLabels,
+            alwaysShowLabel = showNavLabels,
         )
     }
 

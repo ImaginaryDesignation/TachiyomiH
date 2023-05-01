@@ -51,12 +51,12 @@ object SettingsAppearanceScreen : SearchableSettings {
     private fun getNavigationGroup(
         uiPreferences: UiPreferences,
     ): Preference.PreferenceGroup {
-        val hideNavLabel = uiPreferences.hideBottomNavLabels()
+        val showNavLabel = uiPreferences.showBottomNavLabels()
         return Preference.PreferenceGroup(
             title = stringResource(R.string.pref_reader_navigation),
             preferenceItems = listOf(
                 Preference.PreferenceItem.SwitchPreference(
-                    pref = hideNavLabel,
+                    pref = showNavLabel,
                     title = stringResource(R.string.pref_hide_bottom_nav_labels),
                 ),
             ),
