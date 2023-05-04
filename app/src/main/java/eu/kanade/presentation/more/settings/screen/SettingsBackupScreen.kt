@@ -390,6 +390,11 @@ object SettingsBackupScreen : SearchableSettings {
                     title = stringResource(R.string.pref_backup_slots),
                     entries = listOf(2, 3, 4, 5).associateWith { it.toString() },
                 ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = backupPreferences.showAutoBackupNotifications(),
+                    title = stringResource(R.string.pref_auto_backup_notifications),
+                    subtitle = stringResource(R.string.pref_auto_backup_notifications_summary),
+                ),
                 Preference.PreferenceItem.InfoPreference(stringResource(R.string.backup_info)),
             ),
         )

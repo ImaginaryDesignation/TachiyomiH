@@ -44,10 +44,12 @@ class BackupCreateJob(private val context: Context, workerParams: WorkerParamete
         return try {
             val location = BackupManager(context).createBackup(uri, flags, isAutoBackup)
             if (!isAutoBackup) notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
+            else if (backupPreferences.showAutoBackupNotifications().get()) notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
             Result.success()
         } catch (e: Exception) {
             logcat(LogPriority.ERROR, e)
             if (!isAutoBackup) notifier.showBackupError(e.message)
+            else if(backupPreferences.showAutoBackupNotifications().get()) notifier.showBackupError(e.message)
             Result.failure()
         } finally {
             context.cancelNotification(Notifications.ID_BACKUP_PROGRESS)

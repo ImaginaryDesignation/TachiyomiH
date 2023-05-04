@@ -13,4 +13,8 @@ class BackupPreferences(
     fun numberOfBackups() = preferenceStore.getInt("backup_slots", 2)
 
     fun backupInterval() = preferenceStore.getInt("backup_interval", 12)
+
+    fun showAutoBackupNotifications() = preferenceStore.getBoolean("show_auto_backup_notifications", true)
+
+    fun backupLastTimestamp() = preferenceStore.getLong("backup_last_timestamp", 0L)
 }

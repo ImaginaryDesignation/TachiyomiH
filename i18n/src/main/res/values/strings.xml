@@ -969,5 +969,8 @@
     <string name="pref_library_update_warning_notification">Show library update error notification</string>
     <string name="pref_library_update_warning_notification_summary">Show notification when errors occur during library update</string>
 
+    <string name="pref_auto_backup_notifications">Show backup status notifications</string>
+    <string name="pref_auto_backup_notifications_summary">Show notification with status (success/failure) of automatic backups</string>
+
     <string name="updates_next_update_info">Next library update: %s</string>
 </resources>
