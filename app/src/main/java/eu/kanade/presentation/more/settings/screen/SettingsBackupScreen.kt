@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.format.DateUtils
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,6 +58,7 @@ import tachiyomi.presentation.core.util.isScrolledToEnd
 import tachiyomi.presentation.core.util.isScrolledToStart
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import java.util.Date
 
 object SettingsBackupScreen : SearchableSettings {
 
@@ -335,6 +337,8 @@ object SettingsBackupScreen : SearchableSettings {
         val backupInterval by backupIntervalPref.collectAsState()
         val backupDirPref = backupPreferences.backupsDirectory()
         val backupDir by backupDirPref.collectAsState()
+        val showAutoBackupNotificationsPref = backupPreferences.showAutoBackupNotifications()
+        val showAutoBackupNotifications by showAutoBackupNotificationsPref.collectAsState()
         val pickBackupLocation = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.OpenDocumentTree(),
         ) { uri ->
@@ -391,9 +395,14 @@ object SettingsBackupScreen : SearchableSettings {
                     entries = listOf(2, 3, 4, 5).associateWith { it.toString() },
                 ),
                 Preference.PreferenceItem.SwitchPreference(
-                    pref = backupPreferences.showAutoBackupNotifications(),
+                    pref = showAutoBackupNotificationsPref,
                     title = stringResource(R.string.pref_auto_backup_notifications),
                     subtitle = stringResource(R.string.pref_auto_backup_notifications_summary),
+                ),
+                Preference.PreferenceItem.SwitchPreference(
+                    pref = backupPreferences.showAutoBackupErrorNotificationOnly(),
+                    enabled = showAutoBackupNotifications,
+                    title = stringResource(R.string.pref_auto_backup_error_notification_only),
                 ),
                 Preference.PreferenceItem.InfoPreference(stringResource(R.string.backup_info)),
             ),

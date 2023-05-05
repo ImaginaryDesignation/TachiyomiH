@@ -43,13 +43,28 @@ class BackupCreateJob(private val context: Context, workerParams: WorkerParamete
 
         return try {
             val location = BackupManager(context).createBackup(uri, flags, isAutoBackup)
-            if (!isAutoBackup) notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
-            else if (backupPreferences.showAutoBackupNotifications().get()) notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
+            if (!isAutoBackup) {
+                notifier.showBackupComplete(
+                    UniFile.fromUri(
+                        context,
+                        location.toUri(),
+                    ),
+                )
+            } else if (backupPreferences.showAutoBackupNotifications()
+                    .get() && !backupPreferences.showAutoBackupErrorNotificationOnly().get()
+            ) {
+                notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
+            }
             Result.success()
         } catch (e: Exception) {
             logcat(LogPriority.ERROR, e)
-            if (!isAutoBackup) notifier.showBackupError(e.message)
-            else if(backupPreferences.showAutoBackupNotifications().get()) notifier.showBackupError(e.message)
+            if (!isAutoBackup) {
+                notifier.showBackupError(e.message)
+            } else if (backupPreferences.showAutoBackupNotifications()
+                    .get()
+            ) {
+                notifier.showBackupError(e.message)
+            }
             Result.failure()
         } finally {
             context.cancelNotification(Notifications.ID_BACKUP_PROGRESS)
@@ -82,7 +97,11 @@ class BackupCreateJob(private val context: Context, workerParams: WorkerParamete
                     .setInputData(workDataOf(IS_AUTO_BACKUP_KEY to true))
                     .build()
 
-                context.workManager.enqueueUniquePeriodicWork(TAG_AUTO, ExistingPeriodicWorkPolicy.UPDATE, request)
+                context.workManager.enqueueUniquePeriodicWork(
+                    TAG_AUTO,
+                    ExistingPeriodicWorkPolicy.UPDATE,
+                    request,
+                )
             } else {
                 context.workManager.cancelUniqueWork(TAG_AUTO)
             }

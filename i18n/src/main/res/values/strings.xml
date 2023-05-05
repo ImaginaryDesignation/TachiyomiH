@@ -970,7 +970,8 @@
     <string name="pref_library_update_warning_notification_summary">Show notification when errors occur during library update</string>
 
     <string name="pref_auto_backup_notifications">Show backup status notifications</string>
-    <string name="pref_auto_backup_notifications_summary">Show notification with status (success/failure) of automatic backups</string>
+    <string name="pref_auto_backup_notifications_summary">Show status (success/failure) notification for automatic backups as well</string>
+    <string name="pref_auto_backup_error_notification_only">Show backup error notification only</string>
 
     <string name="updates_next_update_info">Next library update: %s</string>
 </resources>
