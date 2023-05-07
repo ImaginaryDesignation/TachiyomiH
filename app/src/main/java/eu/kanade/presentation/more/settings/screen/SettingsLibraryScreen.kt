@@ -126,12 +126,12 @@ object SettingsLibraryScreen : SearchableSettings {
                     subtitle = stringResource(R.string.pref_library_updates_skipped_notification_summary),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
-                    pref = libraryPreferences.showLibraryUpdateWarningNotification(),
+                    pref = libraryPreferences.showLibraryUpdateErrorNotification(),
                     title = stringResource(R.string.pref_library_update_warning_notification),
                     subtitle = stringResource(R.string.pref_library_update_warning_notification_summary),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
-                    pref = libraryPreferences.showLibraryUpdateErrorNotification(),
+                    pref = libraryPreferences.showLibraryUpdateWarningNotification(),
                     title = stringResource(R.string.pref_library_update_error_notification),
                     subtitle = stringResource(R.string.pref_library_update_error_notification_summary),
                 ),
