@@ -127,6 +127,10 @@ class BackupManager(
             // Make sure it's a valid backup file
             BackupFileValidator().validate(context, fileUri)
 
+            if (isAutoBackup) {
+                backupPreferences.backupLastTimestamp().set(Date().time)
+            }
+
             return fileUri.toString()
         } catch (e: Exception) {
             logcat(LogPriority.ERROR, e)

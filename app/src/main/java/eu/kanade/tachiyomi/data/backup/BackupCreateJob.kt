@@ -51,7 +51,7 @@ class BackupCreateJob(private val context: Context, workerParams: WorkerParamete
                     ),
                 )
             } else if (backupPreferences.showAutoBackupNotifications()
-                    .get() && !backupPreferences.showAutoBackupErrorNotificationOnly().get()
+                .get() && !backupPreferences.showAutoBackupErrorNotificationOnly().get()
             ) {
                 notifier.showBackupComplete(UniFile.fromUri(context, location.toUri()))
             }
@@ -61,7 +61,7 @@ class BackupCreateJob(private val context: Context, workerParams: WorkerParamete
             if (!isAutoBackup) {
                 notifier.showBackupError(e.message)
             } else if (backupPreferences.showAutoBackupNotifications()
-                    .get()
+                .get()
             ) {
                 notifier.showBackupError(e.message)
             }

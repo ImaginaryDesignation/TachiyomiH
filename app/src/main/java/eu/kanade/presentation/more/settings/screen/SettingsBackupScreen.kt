@@ -252,6 +252,7 @@ object SettingsBackupScreen : SearchableSettings {
                         },
                     )
                 }
+
                 is MissingRestoreComponents -> {
                     AlertDialog(
                         onDismissRequest = onDismissRequest,
@@ -282,6 +283,7 @@ object SettingsBackupScreen : SearchableSettings {
                         },
                     )
                 }
+
                 else -> error = null // Unknown
             }
         }
@@ -290,7 +292,10 @@ object SettingsBackupScreen : SearchableSettings {
             object : ActivityResultContracts.GetContent() {
                 override fun createIntent(context: Context, input: String): Intent {
                     val intent = super.createIntent(context, input)
-                    return Intent.createChooser(intent, context.getString(R.string.file_select_backup))
+                    return Intent.createChooser(
+                        intent,
+                        context.getString(R.string.file_select_backup),
+                    )
                 }
             },
         ) {
@@ -307,7 +312,8 @@ object SettingsBackupScreen : SearchableSettings {
                     return@rememberLauncherForActivityResult
                 }
 
-                error = MissingRestoreComponents(it, results.missingSources, results.missingTrackers)
+                error =
+                    MissingRestoreComponents(it, results.missingSources, results.missingTrackers)
             }
         }
 
@@ -339,6 +345,7 @@ object SettingsBackupScreen : SearchableSettings {
         val backupDir by backupDirPref.collectAsState()
         val showAutoBackupNotificationsPref = backupPreferences.showAutoBackupNotifications()
         val showAutoBackupNotifications by showAutoBackupNotificationsPref.collectAsState()
+        val lastAutoBackupTime by backupPreferences.backupLastTimestamp().collectAsState()
         val pickBackupLocation = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.OpenDocumentTree(),
         ) { uri ->
@@ -404,9 +411,37 @@ object SettingsBackupScreen : SearchableSettings {
                     enabled = showAutoBackupNotifications,
                     title = stringResource(R.string.pref_auto_backup_error_notification_only),
                 ),
-                Preference.PreferenceItem.InfoPreference(stringResource(R.string.backup_info)),
+                Preference.PreferenceItem.InfoPreference(
+                    stringResource(
+                        R.string.backup_last_and_next_info,
+                        getLastAutoBackupTimeString(lastAutoBackupTime),
+                        getNextAutoBackupTimeString(lastAutoBackupTime, backupInterval),
+                    ),
+                ),
             ),
         )
+    }
+
+    private fun getLastAutoBackupTimeString(lastBackupTime: Long): String {
+        if (lastBackupTime == 0L) {
+            return "Never"
+        }
+        return DateUtils.getRelativeTimeSpanString(
+            lastBackupTime,
+            Date().time,
+            DateUtils.MINUTE_IN_MILLIS,
+        ).toString()
+    }
+
+    private fun getNextAutoBackupTimeString(lastBackupTime: Long, backupInterval: Int): String {
+        if (backupInterval == 0) {
+            return "Automatic backup is turned off"
+        }
+        return DateUtils.getRelativeTimeSpanString(
+            lastBackupTime + (backupInterval * 60 * 60 * 1000),
+            Date().time,
+            DateUtils.MINUTE_IN_MILLIS,
+        ).toString()
     }
 }
 
