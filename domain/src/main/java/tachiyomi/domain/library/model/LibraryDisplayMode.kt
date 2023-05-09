@@ -25,7 +25,7 @@ sealed class LibraryDisplayMode(
 
     companion object {
         val values by lazy { setOf(CompactGrid, ComfortableGrid, List, CoverOnlyGrid) }
-        val default = CompactGrid
+        val default = ComfortableGrid
 
         fun valueOf(flag: Long?): LibraryDisplayMode {
             if (flag == null) return default
