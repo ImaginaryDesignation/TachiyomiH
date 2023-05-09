@@ -61,13 +61,13 @@ class LibraryPreferences(
 
     // region Badges
 
-    fun downloadBadge() = preferenceStore.getBoolean("display_download_badge", false)
+    fun downloadBadge() = preferenceStore.getBoolean("display_download_badge", true)
 
     fun localBadge() = preferenceStore.getBoolean("display_local_badge", true)
 
     fun languageBadge() = preferenceStore.getBoolean("display_language_badge", false)
 
-    fun newShowUpdatesCount() = preferenceStore.getBoolean("library_show_updates_count", true)
+    fun newShowUpdatesCount() = preferenceStore.getBoolean("library_show_updates_count", false)
     fun newUpdatesCount() = preferenceStore.getInt("library_unseen_updates_count", 0)
 
     // endregion
@@ -80,9 +80,9 @@ class LibraryPreferences(
 
     fun categoryTabs() = preferenceStore.getBoolean("display_category_tabs", true)
 
-    fun categoryNumberOfItems() = preferenceStore.getBoolean("display_number_of_items", false)
+    fun categoryNumberOfItems() = preferenceStore.getBoolean("display_number_of_items", true)
 
-    fun categorizedDisplaySettings() = preferenceStore.getBoolean("categorized_display", false)
+    fun categorizedDisplaySettings() = preferenceStore.getBoolean("categorized_display", true)
 
     fun libraryUpdateCategories() = preferenceStore.getStringSet("library_update_categories", emptySet())
 
