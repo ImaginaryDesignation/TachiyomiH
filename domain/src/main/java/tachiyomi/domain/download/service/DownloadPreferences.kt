@@ -10,7 +10,7 @@ class DownloadPreferences(
 
     fun downloadsDirectory() = preferenceStore.getString("download_directory", folderProvider.path())
 
-    fun downloadOnlyOverWifi() = preferenceStore.getBoolean("pref_download_only_over_wifi_key", true)
+    fun downloadOnlyOverWifi() = preferenceStore.getBoolean("pref_download_only_over_wifi_key", false)
 
     fun saveChaptersAsCBZ() = preferenceStore.getBoolean("save_chapter_as_cbz", true)
 
