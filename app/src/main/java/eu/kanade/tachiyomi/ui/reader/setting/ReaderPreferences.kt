@@ -18,18 +18,17 @@ class ReaderPreferences(
 
     fun showReadingMode() = preferenceStore.getBoolean("pref_show_reading_mode", true)
 
-    // TODO: default this to true if reader long strip ever goes stable
-    fun trueColor() = preferenceStore.getBoolean("pref_true_color_key", false)
+    fun trueColor() = preferenceStore.getBoolean("pref_true_color_key", true)
 
     fun fullscreen() = preferenceStore.getBoolean("fullscreen", true)
 
     fun cutoutShort() = preferenceStore.getBoolean("cutout_short", true)
 
-    fun keepScreenOn() = preferenceStore.getBoolean("pref_keep_screen_on_key", true)
+    fun keepScreenOn() = preferenceStore.getBoolean("pref_keep_screen_on_key", false)
 
-    fun defaultReadingMode() = preferenceStore.getInt("pref_default_reading_mode_key", ReadingModeType.RIGHT_TO_LEFT.flagValue)
+    fun defaultReadingMode() = preferenceStore.getInt("pref_default_reading_mode_key", ReadingModeType.LEFT_TO_RIGHT.flagValue)
 
-    fun defaultOrientationType() = preferenceStore.getInt("pref_default_orientation_type_key", OrientationType.FREE.flagValue)
+    fun defaultOrientationType() = preferenceStore.getInt("pref_default_orientation_type_key", OrientationType.PORTRAIT.flagValue)
 
     // TODO: Enable in release build when the feature is stable
     fun longStripSplitWebtoon() = preferenceStore.getBoolean("pref_long_strip_split_webtoon", !isReleaseBuildType)
@@ -46,7 +45,7 @@ class ReaderPreferences(
 
     fun navigateToPan() = preferenceStore.getBoolean("navigate_pan", true)
 
-    fun landscapeZoom() = preferenceStore.getBoolean("landscape_zoom", true)
+    fun landscapeZoom() = preferenceStore.getBoolean("landscape_zoom", false)
 
     fun cropBordersWebtoon() = preferenceStore.getBoolean("crop_borders_webtoon", false)
 
