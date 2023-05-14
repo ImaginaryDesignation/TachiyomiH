@@ -114,7 +114,7 @@ fun UpdateScreen(
                         if (lastUpdated > 0L) {
                             updatesLastUpdatedItem(lastUpdated)
                         }
-                        if (updateInterval > 0) {
+                        if (updateInterval > 0 && lastUpdated > 0L) {
                             updatesNextUpdateItem(lastUpdated, updateInterval)
                         }
 
