@@ -974,5 +974,5 @@
     <string name="pref_auto_backup_error_notification_only">Show backup error notification only</string>
 
     <string name="updates_next_update_info">Next library update: %s</string>
-    <string name="backup_last_and_next_info">You should keep copies of backups in other places as well.\nLast automatic backup: %s\nNext automatic backup: %s</string>
+    <string name="backup_last_and_next_info">You should keep copies of backups in other places as well.%s%s</string>
 </resources>

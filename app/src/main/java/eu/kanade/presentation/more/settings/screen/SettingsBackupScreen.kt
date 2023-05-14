@@ -424,9 +424,9 @@ object SettingsBackupScreen : SearchableSettings {
 
     private fun getLastAutoBackupTimeString(lastBackupTime: Long): String {
         if (lastBackupTime == 0L) {
-            return "Never"
+            return "\nNever"
         }
-        return DateUtils.getRelativeTimeSpanString(
+        return "\nLast automatic backup: " + DateUtils.getRelativeTimeSpanString(
             lastBackupTime,
             Date().time,
             DateUtils.MINUTE_IN_MILLIS,
@@ -435,9 +435,12 @@ object SettingsBackupScreen : SearchableSettings {
 
     private fun getNextAutoBackupTimeString(lastBackupTime: Long, backupInterval: Int): String {
         if (backupInterval == 0) {
-            return "Automatic backup is turned off"
+            return "\nAutomatic backup is turned off"
         }
-        return DateUtils.getRelativeTimeSpanString(
+        if (lastBackupTime == 0L) {
+            return ""
+        }
+        return "\nNext automatic backup: " + DateUtils.getRelativeTimeSpanString(
             lastBackupTime + (backupInterval * 60 * 60 * 1000),
             Date().time,
             DateUtils.MINUTE_IN_MILLIS,
