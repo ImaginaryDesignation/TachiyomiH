@@ -19,4 +19,6 @@ class BackupPreferences(
     fun showAutoBackupErrorNotificationOnly() = preferenceStore.getBoolean("show_auto_backup_error_notification_only", false)
 
     fun backupLastTimestamp() = preferenceStore.getLong("backup_last_timestamp", 0L)
+
+    fun autoBackupStatus() = preferenceStore.getInt("auto_backup_status", -1)
 }

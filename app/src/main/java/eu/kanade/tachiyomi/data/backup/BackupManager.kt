@@ -128,14 +128,21 @@ class BackupManager(
             BackupFileValidator().validate(context, fileUri)
 
             if (isAutoBackup) {
-                backupPreferences.backupLastTimestamp().set(Date().time)
+                backupPreferences.autoBackupStatus().set(1)
             }
 
             return fileUri.toString()
         } catch (e: Exception) {
             logcat(LogPriority.ERROR, e)
             file?.delete()
+            if (isAutoBackup) {
+                backupPreferences.autoBackupStatus().set(0)
+            }
             throw e
+        } finally {
+            if (isAutoBackup) {
+                backupPreferences.backupLastTimestamp().set(Date().time)
+            }
         }
     }
 
