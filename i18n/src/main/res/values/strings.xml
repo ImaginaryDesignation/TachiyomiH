@@ -975,4 +975,13 @@
 
     <string name="updates_next_update_info">Next library update: %s</string>
     <string name="backup_last_and_next_info">You should keep copies of backups in other places as well.%s%s</string>
+    <string name="next_auto_backup_info">\nNext automatic backup: %s</string>
+    <string name="last_auto_backup_info">\nLast automatic backup: %s</string>
+
+    <string name="backup_last_less_than_a_minute">Less than a minute ago</string>
+    <string name="backup_next_in_less_than_a_minute">In less than a minute</string>
+    <string name="backup_last_ago">%s ago</string>
+    <string name="backup_next_in">In %s</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
 </resources>

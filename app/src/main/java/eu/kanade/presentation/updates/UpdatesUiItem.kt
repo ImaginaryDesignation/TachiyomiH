@@ -1,6 +1,6 @@
 package eu.kanade.presentation.updates
 
-import android.text.format.DateUtils
+import android.content.Context
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +38,9 @@ import eu.kanade.presentation.manga.components.ChapterDownloadAction
 import eu.kanade.presentation.manga.components.ChapterDownloadIndicator
 import eu.kanade.presentation.manga.components.DotSeparatorText
 import eu.kanade.presentation.manga.components.MangaCover
+import eu.kanade.presentation.util.Event
+import eu.kanade.presentation.util.getLastTimeString
+import eu.kanade.presentation.util.getNextTimeString
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.download.model.Download
 import eu.kanade.tachiyomi.ui.updates.UpdatesItem
@@ -46,20 +49,17 @@ import tachiyomi.presentation.core.components.ListGroupHeader
 import tachiyomi.presentation.core.components.material.ReadItemAlpha
 import tachiyomi.presentation.core.components.material.padding
 import tachiyomi.presentation.core.util.selectedBackground
-import java.util.Date
-import kotlin.time.Duration.Companion.minutes
 
 internal fun LazyListScope.updatesLastUpdatedItem(
     lastUpdated: Long,
+    now: Long,
+    context: Context,
+    relativeTime: Int,
+    dateFormat: String,
 ) {
     item(key = "updates-lastUpdated") {
-        val time = remember(lastUpdated) {
-            val now = Date().time
-            if (now - lastUpdated < 1.minutes.inWholeMilliseconds) {
-                null
-            } else {
-                DateUtils.getRelativeTimeSpanString(lastUpdated, now, DateUtils.MINUTE_IN_MILLIS)
-            }
+        val time = remember(lastUpdated, dateFormat) {
+            lastUpdated.getLastTimeString(now, context, relativeTime, dateFormat, Event.LIBRARY_UPDATE, -1)
         }
 
         Box(
@@ -68,11 +68,7 @@ internal fun LazyListScope.updatesLastUpdatedItem(
                 .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.tiny),
         ) {
             Text(
-                text = if (time.isNullOrEmpty()) {
-                    stringResource(R.string.updates_last_update_info, stringResource(R.string.updates_last_update_info_just_now))
-                } else {
-                    stringResource(R.string.updates_last_update_info, time)
-                },
+                text = time,
                 fontStyle = FontStyle.Italic,
             )
         }
@@ -82,11 +78,14 @@ internal fun LazyListScope.updatesLastUpdatedItem(
 internal fun LazyListScope.updatesNextUpdateItem(
     lastUpdated: Long,
     updateInterval: Int,
+    now: Long,
+    context: Context,
+    relativeTime: Int,
+    dateFormat: String,
 ) {
     item(key = "updates-nextUpdate") {
-        val time = remember(lastUpdated, updateInterval) {
-            val now = Date().time
-            DateUtils.getRelativeTimeSpanString((lastUpdated + (updateInterval * 60 * 60 * 1000)), now, DateUtils.MINUTE_IN_MILLIS)
+        val time = remember(lastUpdated, updateInterval, dateFormat) {
+            lastUpdated.getNextTimeString(now, context, relativeTime, dateFormat, Event.LIBRARY_UPDATE, updateInterval)
         }
 
         Box(
@@ -95,7 +94,7 @@ internal fun LazyListScope.updatesNextUpdateItem(
                 .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.tiny),
         ) {
             Text(
-                text = stringResource(R.string.updates_next_update_info, time),
+                text = time,
                 fontStyle = FontStyle.Italic,
             )
         }

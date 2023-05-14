@@ -68,6 +68,7 @@ class UpdatesScreenModel(
     val lastUpdated by libraryPreferences.libraryUpdateLastTimestamp().asState(coroutineScope)
     val updateInterval by libraryPreferences.libraryUpdateInterval().asState(coroutineScope)
     val relativeTime by uiPreferences.relativeTime().asState(coroutineScope)
+    val dateFormat by uiPreferences.dateFormat().asState(coroutineScope)
 
     // First and last selected index in list
     private val selectedPositions: Array<Int> = arrayOf(-1, -1)

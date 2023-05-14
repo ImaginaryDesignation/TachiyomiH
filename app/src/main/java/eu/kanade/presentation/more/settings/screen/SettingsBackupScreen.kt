@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.text.format.DateUtils
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,9 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.hippo.unifile.UniFile
+import eu.kanade.domain.ui.UiPreferences
 import eu.kanade.presentation.extensions.RequestStoragePermission
 import eu.kanade.presentation.more.settings.Preference
+import eu.kanade.presentation.util.Event
 import eu.kanade.presentation.util.collectAsState
+import eu.kanade.presentation.util.getLastTimeString
+import eu.kanade.presentation.util.getNextTimeString
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.backup.BackupConst
 import eu.kanade.tachiyomi.data.backup.BackupCreateJob
@@ -70,13 +73,17 @@ object SettingsBackupScreen : SearchableSettings {
     @Composable
     override fun getPreferences(): List<Preference> {
         val backupPreferences = Injekt.get<BackupPreferences>()
+        val uiPreferences = Injekt.get<UiPreferences>()
 
         DiskUtil.RequestStoragePermission()
 
         return listOf(
             getCreateBackupPref(),
             getRestoreBackupPref(),
-            getAutomaticBackupGroup(backupPreferences = backupPreferences),
+            getAutomaticBackupGroup(
+                backupPreferences = backupPreferences,
+                uiPreferences = uiPreferences,
+            ),
         )
     }
 
@@ -337,15 +344,43 @@ object SettingsBackupScreen : SearchableSettings {
     @Composable
     fun getAutomaticBackupGroup(
         backupPreferences: BackupPreferences,
+        uiPreferences: UiPreferences,
     ): Preference.PreferenceGroup {
         val context = LocalContext.current
         val backupIntervalPref = backupPreferences.backupInterval()
         val backupInterval by backupIntervalPref.collectAsState()
         val backupDirPref = backupPreferences.backupsDirectory()
         val backupDir by backupDirPref.collectAsState()
+
+        val relativeTime: Int = remember { uiPreferences.relativeTime().get() }
+        val dateFormat: String =
+            remember { uiPreferences.dateFormat().get() }
         val showAutoBackupNotificationsPref = backupPreferences.showAutoBackupNotifications()
         val showAutoBackupNotifications by showAutoBackupNotificationsPref.collectAsState()
         val lastAutoBackupTime by backupPreferences.backupLastTimestamp().collectAsState()
+        val automaticBackupStatus by backupPreferences.autoBackupStatus().collectAsState()
+        val now = remember(lastAutoBackupTime, automaticBackupStatus) { Date().time }
+        val lastAutoBackupTimeString = remember(lastAutoBackupTime, automaticBackupStatus) {
+            lastAutoBackupTime.getLastTimeString(
+                now,
+                context,
+                relativeTime,
+                dateFormat,
+                Event.AUTOMATIC_BACKUP,
+                automaticBackupStatus,
+            )
+        }
+        val nextAutoBackupTimeString = remember(lastAutoBackupTime, backupInterval) {
+            lastAutoBackupTime.getNextTimeString(
+                now,
+                context,
+                relativeTime,
+                dateFormat,
+                Event.AUTOMATIC_BACKUP,
+                backupInterval,
+            )
+        }
+
         val pickBackupLocation = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.OpenDocumentTree(),
         ) { uri ->
@@ -414,37 +449,12 @@ object SettingsBackupScreen : SearchableSettings {
                 Preference.PreferenceItem.InfoPreference(
                     stringResource(
                         R.string.backup_last_and_next_info,
-                        getLastAutoBackupTimeString(lastAutoBackupTime),
-                        getNextAutoBackupTimeString(lastAutoBackupTime, backupInterval),
+                        lastAutoBackupTimeString,
+                        nextAutoBackupTimeString,
                     ),
                 ),
             ),
         )
-    }
-
-    private fun getLastAutoBackupTimeString(lastBackupTime: Long): String {
-        if (lastBackupTime == 0L) {
-            return "\nNever"
-        }
-        return "\nLast automatic backup: " + DateUtils.getRelativeTimeSpanString(
-            lastBackupTime,
-            Date().time,
-            DateUtils.MINUTE_IN_MILLIS,
-        ).toString()
-    }
-
-    private fun getNextAutoBackupTimeString(lastBackupTime: Long, backupInterval: Int): String {
-        if (backupInterval == 0) {
-            return "\nAutomatic backup is turned off"
-        }
-        if (lastBackupTime == 0L) {
-            return ""
-        }
-        return "\nNext automatic backup: " + DateUtils.getRelativeTimeSpanString(
-            lastBackupTime + (backupInterval * 60 * 60 * 1000),
-            Date().time,
-            DateUtils.MINUTE_IN_MILLIS,
-        ).toString()
     }
 }
 

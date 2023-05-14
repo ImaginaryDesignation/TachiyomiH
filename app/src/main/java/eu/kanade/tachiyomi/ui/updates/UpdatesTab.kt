@@ -58,6 +58,7 @@ object UpdatesTab : Tab {
             snackbarHostState = screenModel.snackbarHostState,
             lastUpdated = screenModel.lastUpdated,
             updateInterval = screenModel.updateInterval,
+            dateFormat = screenModel.dateFormat,
             relativeTime = screenModel.relativeTime,
             onClickCover = { item -> navigator.push(MangaScreen(item.update.mangaId)) },
             onSelectAll = screenModel::toggleAllSelection,

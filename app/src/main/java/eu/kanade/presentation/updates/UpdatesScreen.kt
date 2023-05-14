@@ -37,6 +37,7 @@ import tachiyomi.presentation.core.components.material.PullRefresh
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.screens.EmptyScreen
 import tachiyomi.presentation.core.screens.LoadingScreen
+import java.util.Date
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -45,6 +46,7 @@ fun UpdateScreen(
     snackbarHostState: SnackbarHostState,
     lastUpdated: Long,
     updateInterval: Int,
+    dateFormat: String,
     relativeTime: Int,
     onClickCover: (UpdatesItem) -> Unit,
     onSelectAll: (Boolean) -> Unit,
@@ -60,6 +62,9 @@ fun UpdateScreen(
     BackHandler(enabled = state.selectionMode, onBack = { onSelectAll(false) })
 
     val context = LocalContext.current
+    val now = remember(lastUpdated) {
+        Date().time
+    }
 
     Scaffold(
         topBar = { scrollBehavior ->
@@ -112,10 +117,10 @@ fun UpdateScreen(
                         contentPadding = contentPadding,
                     ) {
                         if (lastUpdated > 0L) {
-                            updatesLastUpdatedItem(lastUpdated)
+                            updatesLastUpdatedItem(lastUpdated, now, context, relativeTime, dateFormat)
                         }
                         if (updateInterval > 0 && lastUpdated > 0L) {
-                            updatesNextUpdateItem(lastUpdated, updateInterval)
+                            updatesNextUpdateItem(lastUpdated, updateInterval, now, context, relativeTime, dateFormat)
                         }
 
                         updatesUiItems(
