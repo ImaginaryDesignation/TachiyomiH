@@ -65,8 +65,8 @@ class AppUpdateChecker {
 
     private fun isNewVersionX(versionTag: String): Boolean {
         if (versionTag != BuildConfig.VERSION_NAME) {
-            val newVersion = versionTag.split("x")
-            val currentVersion = BuildConfig.VERSION_NAME.split("x")
+            val newVersion = versionTag.split("h")
+            val currentVersion = BuildConfig.VERSION_NAME.split("h")
             val newSemVer = newVersion[0].split(".").map { it.toInt() }
             val oldSemVer = currentVersion[0].split(".").map { it.toInt() }
 
@@ -111,9 +111,9 @@ class AppUpdateChecker {
 
 val GITHUB_REPO: String by lazy {
     if (BuildConfig.PREVIEW) {
-        "ImaginaryDesignation/TachiyomiX"
+        "ImaginaryDesignation/TachiyomiH"
     } else {
-        "ImaginaryDesignation/TachiyomiX"
+        "ImaginaryDesignation/TachiyomiH"
     }
 }
 
