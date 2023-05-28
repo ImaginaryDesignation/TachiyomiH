@@ -26,16 +26,22 @@ fun Long.getLastTimeString(
             )
         }
         Event.AUTOMATIC_BACKUP -> {
-            return if (status == 1) {
-                context.getString(
-                    R.string.last_auto_backup_info,
-                    "$timeString (${context.getString(R.string.success)})",
-                )
-            } else {
-                context.getString(
-                    R.string.last_auto_backup_info,
-                    "$timeString (${context.getString(R.string.failed)})",
-                )
+            return when (status) {
+                1 -> {
+                    context.getString(
+                        R.string.last_auto_backup_info,
+                        "$timeString (${context.getString(R.string.success)})",
+                    )
+                }
+                -1 -> {
+                    context.getString(R.string.last_auto_backup_info, timeString)
+                }
+                else -> {
+                    context.getString(
+                        R.string.last_auto_backup_info,
+                        "$timeString (${context.getString(R.string.failed)})",
+                    )
+                }
             }
         }
     }
