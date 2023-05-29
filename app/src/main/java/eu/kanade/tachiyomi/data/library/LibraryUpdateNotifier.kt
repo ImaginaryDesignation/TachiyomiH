@@ -121,7 +121,7 @@ class LibraryUpdateNotifier(private val context: Context) {
         ) {
             setContentTitle(context.resources.getString(R.string.notification_update_error, failed))
             setContentText(context.getString(R.string.action_show_errors))
-            setSmallIcon(R.drawable.ic_tachi)
+            setSmallIcon(R.drawable.ic_tachi_h)
 
             setContentIntent(NotificationReceiver.openErrorLogPendingActivity(context, uri))
         }
@@ -143,7 +143,7 @@ class LibraryUpdateNotifier(private val context: Context) {
         ) {
             setContentTitle(context.resources.getString(R.string.notification_update_skipped, skipped))
             setContentText(context.getString(R.string.learn_more))
-            setSmallIcon(R.drawable.ic_tachi)
+            setSmallIcon(R.drawable.ic_tachi_h)
             setContentIntent(NotificationHandler.openUrl(context, HELP_SKIPPED_URL))
         }
     }
@@ -176,7 +176,7 @@ class LibraryUpdateNotifier(private val context: Context) {
                 }
             }
 
-            setSmallIcon(R.drawable.ic_tachi)
+            setSmallIcon(R.drawable.ic_tachi_h)
             setLargeIcon(notificationBitmap)
 
             setGroup(Notifications.GROUP_NEW_CHAPTERS)
@@ -209,7 +209,7 @@ class LibraryUpdateNotifier(private val context: Context) {
             setContentText(description)
             setStyle(NotificationCompat.BigTextStyle().bigText(description))
 
-            setSmallIcon(R.drawable.ic_tachi)
+            setSmallIcon(R.drawable.ic_tachi_h)
 
             if (icon != null) {
                 setLargeIcon(icon)
