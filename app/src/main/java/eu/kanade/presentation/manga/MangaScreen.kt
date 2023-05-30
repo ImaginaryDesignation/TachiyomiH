@@ -277,7 +277,7 @@ private fun MangaScreenSmallImpl(
                 onClickDownload = onDownloadActionClicked,
                 onClickEditCategory = onEditCategoryClicked,
                 onClickRefresh = onRefresh,
-                onClickMigrate = onMigrateClicked,
+                onClickMigrate = null,
                 actionModeCounter = chapters.count { it.selected },
                 onSelectAll = { onAllChapterSelected(true) },
                 onInvertSelection = { onInvertSelection() },
@@ -371,6 +371,7 @@ private fun MangaScreenSmallImpl(
                             onWebViewLongClicked = onWebViewLongClicked,
                             onTrackingClicked = onTrackingClicked,
                             onEditCategory = onEditCategoryClicked,
+                            onClickMigrate = onMigrateClicked,
                         )
                     }
 
@@ -499,7 +500,7 @@ fun MangaScreenLargeImpl(
                     onClickDownload = onDownloadActionClicked,
                     onClickEditCategory = onEditCategoryClicked,
                     onClickRefresh = onRefresh,
-                    onClickMigrate = onMigrateClicked,
+                    onClickMigrate = null,
                     actionModeCounter = chapters.count { it.selected },
                     onSelectAll = { onAllChapterSelected(true) },
                     onInvertSelection = { onInvertSelection() },
@@ -576,6 +577,7 @@ fun MangaScreenLargeImpl(
                             onWebViewLongClicked = onWebViewLongClicked,
                             onTrackingClicked = onTrackingClicked,
                             onEditCategory = onEditCategoryClicked,
+                            onClickMigrate = onMigrateClicked,
                         )
                         ExpandableMangaDescription(
                             defaultExpandState = true,

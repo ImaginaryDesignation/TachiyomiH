@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.DoneAll
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.FindReplace
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
@@ -167,6 +168,7 @@ fun MangaActionRow(
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: (() -> Unit)?,
     onEditCategory: (() -> Unit)?,
+    onClickMigrate: (() -> Unit)?,
 ) {
     Row(modifier = modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)) {
         val defaultActionButtonColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .38f)
@@ -200,6 +202,14 @@ fun MangaActionRow(
                 color = defaultActionButtonColor,
                 onClick = onWebViewClicked,
                 onLongClick = onWebViewLongClicked,
+            )
+        }
+        if (onClickMigrate != null) {
+            MangaActionButton(
+                title = stringResource(R.string.migrate),
+                icon = Icons.Outlined.FindReplace,
+                color = defaultActionButtonColor,
+                onClick = onClickMigrate,
             )
         }
     }
