@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
+    kotlin("plugin.parcelize")
     kotlin("plugin.serialization")
     id("com.github.zellius.shortcut-helper")
 }
@@ -256,6 +257,9 @@ dependencies {
     // For detecting memory leaks; see https://square.github.io/leakcanary/
     // debugImplementation(libs.leakcanary.android)
     implementation(libs.leakcanary.plumber)
+
+    // Text distance
+    implementation("info.debatty:java-string-similarity:2.0.0")
 }
 
 androidComponents {

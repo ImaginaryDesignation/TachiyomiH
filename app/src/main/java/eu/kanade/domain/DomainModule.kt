@@ -42,6 +42,7 @@ import tachiyomi.domain.chapter.interactor.ShouldUpdateDbChapter
 import tachiyomi.domain.chapter.interactor.UpdateChapter
 import tachiyomi.domain.chapter.repository.ChapterRepository
 import tachiyomi.domain.history.interactor.GetHistory
+import tachiyomi.domain.history.interactor.GetHistoryByMangaId
 import tachiyomi.domain.history.interactor.GetNextChapters
 import tachiyomi.domain.history.interactor.GetTotalReadDuration
 import tachiyomi.domain.history.interactor.RemoveHistory
@@ -119,6 +120,7 @@ class DomainModule : InjektModule {
 
         addSingletonFactory<HistoryRepository> { HistoryRepositoryImpl(get()) }
         addFactory { GetHistory(get()) }
+        addFactory { GetHistoryByMangaId(get()) }
         addFactory { UpsertHistory(get()) }
         addFactory { RemoveHistory(get()) }
         addFactory { GetTotalReadDuration(get()) }

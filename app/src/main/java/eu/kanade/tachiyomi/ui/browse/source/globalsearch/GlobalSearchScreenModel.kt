@@ -31,11 +31,19 @@ class GlobalSearchScreenModel(
         val enabledLanguages = sourcePreferences.enabledLanguages().get()
         val disabledSources = sourcePreferences.disabledSources().get()
         val pinnedSources = sourcePreferences.pinnedSources().get()
+        val shouldSearchPinnedOnly = sourcePreferences.searchPinnedSourcesOnly().get()
 
         return sourceManager.getCatalogueSources()
             .filter { it.lang in enabledLanguages }
             .filterNot { "${it.id}" in disabledSources }
             .sortedWith(compareBy({ "${it.id}" !in pinnedSources }, { "${it.name.lowercase()} (${it.lang})" }))
+            .filter {
+                if (shouldSearchPinnedOnly) {
+                    "${it.id}" in pinnedSources
+                } else {
+                    true
+                }
+            }
     }
 
     override fun updateSearchQuery(query: String?) {

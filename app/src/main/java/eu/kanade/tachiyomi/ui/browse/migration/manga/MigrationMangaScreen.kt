@@ -8,14 +8,17 @@ import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import eu.kanade.domain.UnsortedPreferences
 import eu.kanade.presentation.browse.MigrateMangaScreen
 import eu.kanade.presentation.util.Screen
 import eu.kanade.tachiyomi.R
-import eu.kanade.tachiyomi.ui.browse.migration.search.MigrateSearchScreen
+import eu.kanade.tachiyomi.ui.browse.migration.advanced.design.PreMigrationScreen
 import eu.kanade.tachiyomi.ui.manga.MangaScreen
 import eu.kanade.tachiyomi.util.system.toast
 import kotlinx.coroutines.flow.collectLatest
 import tachiyomi.presentation.core.screens.LoadingScreen
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 
 data class MigrationMangaScreen(
     private val sourceId: Long,
@@ -38,7 +41,13 @@ data class MigrationMangaScreen(
             navigateUp = navigator::pop,
             title = state.source!!.name,
             state = state,
-            onClickItem = { navigator.push(MigrateSearchScreen(it.id)) },
+            onClickItem = {
+                PreMigrationScreen.navigateToMigration(
+                    Injekt.get<UnsortedPreferences>().skipPreMigration().get(),
+                    navigator,
+                    listOf(it.id),
+                )
+            },
             onClickCover = { navigator.push(MangaScreen(it.id)) },
         )
 

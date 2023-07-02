@@ -17,6 +17,7 @@ import uy.kohesive.injekt.api.get
 
 class MigrateSearchScreenModel(
     val mangaId: Long,
+    val validSources: List<Long>,
     initialExtensionFilter: String = "",
     preferences: BasePreferences = Injekt.get(),
     private val sourcePreferences: SourcePreferences = Injekt.get(),
@@ -41,15 +42,8 @@ class MigrateSearchScreenModel(
     val lastUsedSourceId = sourcePreferences.lastUsedSource()
 
     override fun getEnabledSources(): List<CatalogueSource> {
-        val enabledLanguages = sourcePreferences.enabledLanguages().get()
-        val disabledSources = sourcePreferences.disabledSources().get()
-        val pinnedSources = sourcePreferences.pinnedSources().get()
-
-        return sourceManager.getCatalogueSources()
-            .filter { it.lang in enabledLanguages }
-            .filterNot { "${it.id}" in disabledSources }
-            .sortedWith(compareBy({ "${it.id}" !in pinnedSources }, { "${it.name.lowercase()} (${it.lang})" }))
-            .sortedByDescending { it.id == state.value.manga!!.source }
+        return validSources.mapNotNull { sourceManager.get(it) }
+            .filterIsInstance<CatalogueSource>()
     }
 
     override fun updateSearchQuery(query: String?) {
@@ -67,16 +61,6 @@ class MigrateSearchScreenModel(
     override fun getItems(): Map<CatalogueSource, SearchItemResult> {
         return mutableState.value.items
     }
-
-    fun setDialog(dialog: MigrateSearchDialog?) {
-        mutableState.update {
-            it.copy(dialog = dialog)
-        }
-    }
-}
-
-sealed class MigrateSearchDialog {
-    data class Migrate(val manga: Manga) : MigrateSearchDialog()
 }
 
 @Immutable
@@ -84,7 +68,6 @@ data class MigrateSearchState(
     val manga: Manga? = null,
     val searchQuery: String? = null,
     val items: Map<CatalogueSource, SearchItemResult> = emptyMap(),
-    val dialog: MigrateSearchDialog? = null,
 ) {
 
     val progress: Int = items.count { it.value !is SearchItemResult.Loading }

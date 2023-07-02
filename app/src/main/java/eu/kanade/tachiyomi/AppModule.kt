@@ -7,6 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import eu.kanade.domain.UnsortedPreferences
 import eu.kanade.domain.base.BasePreferences
 import eu.kanade.domain.source.service.SourcePreferences
 import eu.kanade.domain.track.service.TrackPreferences
@@ -201,6 +202,9 @@ class PreferenceModule(val application: Application) : InjektModule {
         }
         addSingletonFactory {
             BasePreferences(application, get())
+        }
+        addSingletonFactory {
+            UnsortedPreferences(get())
         }
     }
 }

@@ -5,7 +5,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import cafe.adriel.voyager.core.model.StateScreenModel
 import eu.kanade.domain.manga.interactor.UpdateManga
+import eu.kanade.domain.manga.model.copyFrom
 import eu.kanade.domain.manga.model.toDomainManga
+import eu.kanade.domain.manga.model.toSManga
 import eu.kanade.domain.source.service.SourcePreferences
 import eu.kanade.presentation.util.ioCoroutineScope
 import eu.kanade.tachiyomi.extension.ExtensionManager
@@ -16,10 +18,15 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import logcat.LogPriority
 import tachiyomi.core.util.lang.awaitSingle
+import tachiyomi.core.util.lang.withIOContext
+import tachiyomi.core.util.lang.withNonCancellableContext
+import tachiyomi.core.util.system.logcat
 import tachiyomi.domain.manga.interactor.GetManga
 import tachiyomi.domain.manga.interactor.NetworkToLocalManga
 import tachiyomi.domain.manga.model.Manga
+import tachiyomi.domain.manga.model.toMangaUpdate
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import java.util.concurrent.Executors
@@ -50,13 +57,37 @@ abstract class SearchScreenModel<T>(
     }
 
     @Composable
-    fun getManga(initialManga: Manga): State<Manga> {
+    fun getManga(source: CatalogueSource, initialManga: Manga): State<Manga> {
         return produceState(initialValue = initialManga) {
             getManga.subscribe(initialManga.url, initialManga.source)
                 .collectLatest { manga ->
                     if (manga == null) return@collectLatest
+                    withIOContext {
+                        initializeManga(source, manga)
+                    }
                     value = manga
                 }
+        }
+    }
+
+    /**
+     * Initialize a manga.
+     *
+     * @param source to interact with
+     * @param manga to initialize.
+     */
+    private suspend fun initializeManga(source: CatalogueSource, manga: Manga) {
+        if (manga.thumbnailUrl != null || manga.initialized) return
+        withNonCancellableContext {
+            try {
+                val networkManga = source.getMangaDetails(manga.toSManga())
+                val updatedManga = manga.copyFrom(networkManga)
+                    .copy(initialized = true)
+
+                updateManga.await(updatedManga.toMangaUpdate())
+            } catch (e: Exception) {
+                logcat(LogPriority.ERROR, e)
+            }
         }
     }
 
@@ -68,23 +99,15 @@ abstract class SearchScreenModel<T>(
         val enabledSources = getEnabledSources()
 
         if (filter.isEmpty()) {
-            val shouldSearchPinnedOnly = sourcePreferences.searchPinnedSourcesOnly().get()
-            val pinnedSources = sourcePreferences.pinnedSources().get()
-
-            return enabledSources.filter {
-                if (shouldSearchPinnedOnly) {
-                    "${it.id}" in pinnedSources
-                } else {
-                    true
-                }
-            }
+            return enabledSources
         }
 
-        return extensionManager.installedExtensionsFlow.value
+        val filteredSourceIds = extensionManager.installedExtensionsFlow.value
             .filter { it.pkgName == filter }
             .flatMap { it.sources }
-            .filter { it in enabledSources }
             .filterIsInstance<CatalogueSource>()
+            .map { it.id }
+        return enabledSources.filter { it.id in filteredSourceIds }
     }
 
     abstract fun updateSearchQuery(query: String?)

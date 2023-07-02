@@ -12,10 +12,11 @@ import uy.kohesive.injekt.injectLazy
 
 object MigrationFlags {
 
-    private const val CHAPTERS = 0b0001
-    private const val CATEGORIES = 0b0010
-    private const val TRACK = 0b0100
-    private const val CUSTOM_COVER = 0b1000
+    const val CHAPTERS = 0b0001
+    const val CATEGORIES = 0b0010
+    const val TRACK = 0b0100
+    const val CUSTOM_COVER = 0b1000
+    const val EXTRA = 0b10000
 
     private val coverCache: CoverCache by injectLazy()
     private val getTracks: GetTracks = Injekt.get()
@@ -58,5 +59,9 @@ object MigrationFlags {
             }
         }
         return titles.toTypedArray()
+    }
+
+    fun hasExtra(value: Int): Boolean {
+        return value and EXTRA != 0
     }
 }

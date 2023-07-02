@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import logcat.LogPriority
 import tachiyomi.core.util.system.logcat
 import tachiyomi.data.DatabaseHandler
+import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryUpdate
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.repository.HistoryRepository
@@ -66,5 +67,25 @@ class HistoryRepositoryImpl(
         } catch (e: Exception) {
             logcat(LogPriority.ERROR, throwable = e)
         }
+    }
+
+    override suspend fun upsertHistory(historyUpdates: List<HistoryUpdate>) {
+        try {
+            handler.await(true) {
+                historyUpdates.forEach { historyUpdate ->
+                    historyQueries.upsert(
+                        historyUpdate.chapterId,
+                        historyUpdate.readAt,
+                        historyUpdate.sessionReadDuration,
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            logcat(LogPriority.ERROR, throwable = e)
+        }
+    }
+
+    override suspend fun getByMangaId(mangaId: Long): List<History> {
+        return handler.awaitList { historyQueries.getHistoryByMangaId(mangaId, historyMapper) }
     }
 }
