@@ -45,6 +45,7 @@ fun MoreScreen(
     onClickDownloadQueue: () -> Unit,
     onClickCategories: () -> Unit,
     onClickStats: () -> Unit,
+    onClickLibraryUpdateErrors: () -> Unit,
     onClickBackupAndRestore: () -> Unit,
     onClickSettings: () -> Unit,
     onClickAbout: () -> Unit,
@@ -137,6 +138,13 @@ fun MoreScreen(
                     title = stringResource(R.string.label_stats),
                     icon = Icons.Outlined.QueryStats,
                     onPreferenceClick = onClickStats,
+                )
+            }
+            item {
+                TextPreferenceWidget(
+                    title = stringResource(R.string.option_label_library_update_errors),
+                    icon = Icons.Outlined.Info,
+                    onPreferenceClick = onClickLibraryUpdateErrors,
                 )
             }
             item {

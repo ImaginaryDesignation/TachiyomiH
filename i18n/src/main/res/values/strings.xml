@@ -985,6 +985,10 @@
     <string name="success">Success</string>
     <string name="failed">Failed</string>
 
+    <string name="option_label_library_update_errors">Library update errors</string>
+    <string name="label_library_update_errors">Library update errors (%d)</string>
+    <string name="info_empty_library_update_errors">You have no library update errors.</string>
+
     <string name="no_chapters_found_for_migration">No chapters found, this entry cannot be used for migration</string>
     <plurals name="entry_migrated">
         <item quantity="one">%d entry migrated</item>
