@@ -19,14 +19,14 @@ import eu.kanade.domain.source.interactor.ToggleSourcePin
 import tachiyomi.data.category.CategoryRepositoryImpl
 import tachiyomi.data.chapter.ChapterRepositoryImpl
 import tachiyomi.data.history.HistoryRepositoryImpl
+import tachiyomi.data.libraryUpdateError.LibraryUpdateErrorRepositoryImpl
+import tachiyomi.data.libraryUpdateError.LibraryUpdateErrorWithRelationsRepositoryImpl
+import tachiyomi.data.libraryUpdateErrorMessage.LibraryUpdateErrorMessageRepositoryImpl
 import tachiyomi.data.manga.MangaRepositoryImpl
 import tachiyomi.data.source.SourceDataRepositoryImpl
 import tachiyomi.data.source.SourceRepositoryImpl
 import tachiyomi.data.track.TrackRepositoryImpl
 import tachiyomi.data.updates.UpdatesRepositoryImpl
-import tachiyomi.data.libraryUpdateError.LibraryUpdateErrorRepositoryImpl
-import tachiyomi.data.libraryUpdateError.LibraryUpdateErrorWithRelationsRepositoryImpl
-import tachiyomi.data.libraryUpdateErrorMessage.LibraryUpdateErrorMessageRepositoryImpl
 import tachiyomi.domain.category.interactor.CreateCategoryWithName
 import tachiyomi.domain.category.interactor.DeleteCategory
 import tachiyomi.domain.category.interactor.GetCategories
@@ -51,8 +51,19 @@ import tachiyomi.domain.history.interactor.GetTotalReadDuration
 import tachiyomi.domain.history.interactor.RemoveHistory
 import tachiyomi.domain.history.interactor.UpsertHistory
 import tachiyomi.domain.history.repository.HistoryRepository
+import tachiyomi.domain.libraryUpdateError.interactor.DeleteLibraryUpdateErrors
+import tachiyomi.domain.libraryUpdateError.interactor.GetLibraryUpdateErrorWithRelations
+import tachiyomi.domain.libraryUpdateError.interactor.GetLibraryUpdateErrors
+import tachiyomi.domain.libraryUpdateError.interactor.InsertLibraryUpdateErrors
+import tachiyomi.domain.libraryUpdateError.repository.LibraryUpdateErrorRepository
+import tachiyomi.domain.libraryUpdateError.repository.LibraryUpdateErrorWithRelationsRepository
+import tachiyomi.domain.libraryUpdateErrorMessage.interactor.DeleteLibraryUpdateErrorMessages
+import tachiyomi.domain.libraryUpdateErrorMessage.interactor.GetLibraryUpdateErrorMessages
+import tachiyomi.domain.libraryUpdateErrorMessage.interactor.InsertLibraryUpdateErrorMessages
+import tachiyomi.domain.libraryUpdateErrorMessage.repository.LibraryUpdateErrorMessageRepository
 import tachiyomi.domain.manga.interactor.GetDuplicateLibraryManga
 import tachiyomi.domain.manga.interactor.GetFavorites
+import tachiyomi.domain.manga.interactor.GetFavoritesAndReadMangaNotInLibrary
 import tachiyomi.domain.manga.interactor.GetLibraryManga
 import tachiyomi.domain.manga.interactor.GetManga
 import tachiyomi.domain.manga.interactor.GetMangaWithChapters
@@ -71,16 +82,6 @@ import tachiyomi.domain.track.interactor.InsertTrack
 import tachiyomi.domain.track.repository.TrackRepository
 import tachiyomi.domain.updates.interactor.GetUpdates
 import tachiyomi.domain.updates.repository.UpdatesRepository
-import tachiyomi.domain.libraryUpdateError.interactor.DeleteLibraryUpdateErrors
-import tachiyomi.domain.libraryUpdateError.interactor.GetLibraryUpdateErrorWithRelations
-import tachiyomi.domain.libraryUpdateError.interactor.GetLibraryUpdateErrors
-import tachiyomi.domain.libraryUpdateError.interactor.InsertLibraryUpdateErrors
-import tachiyomi.domain.libraryUpdateError.repository.LibraryUpdateErrorRepository
-import tachiyomi.domain.libraryUpdateError.repository.LibraryUpdateErrorWithRelationsRepository
-import tachiyomi.domain.libraryUpdateErrorMessage.interactor.DeleteLibraryUpdateErrorMessages
-import tachiyomi.domain.libraryUpdateErrorMessage.interactor.GetLibraryUpdateErrorMessages
-import tachiyomi.domain.libraryUpdateErrorMessage.interactor.InsertLibraryUpdateErrorMessages
-import tachiyomi.domain.libraryUpdateErrorMessage.repository.LibraryUpdateErrorMessageRepository
 import uy.kohesive.injekt.api.InjektModule
 import uy.kohesive.injekt.api.InjektRegistrar
 import uy.kohesive.injekt.api.addFactory
@@ -107,6 +108,7 @@ class DomainModule : InjektModule {
         addFactory { GetLibraryManga(get()) }
         addFactory { GetMangaWithChapters(get(), get()) }
         addFactory { GetManga(get()) }
+        addFactory { GetFavoritesAndReadMangaNotInLibrary(get()) }
         addFactory { GetNextChapters(get(), get(), get()) }
         addFactory { ResetViewerFlags(get()) }
         addFactory { SetMangaChapterFlags(get()) }

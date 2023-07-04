@@ -963,7 +963,7 @@
 
     <string name="pref_library_update_notifications">Library update notifications</string>
     <string name="pref_library_updates_skipped_notification">Show number of library updates skipped</string>
-    <string name="pref_library_updates_skipped_notification_summary">Show notification with number of mangas skipped during library update</string>
+    <string name="pref_library_updates_skipped_notification_summary">Show notification with number of manga skipped during library update</string>
     <string name="pref_library_update_error_notification">Show library update warning notification</string>
     <string name="pref_library_update_error_notification_summary">Show warning notification when number of manga per source in update queue exceeds 60</string>
     <string name="pref_library_update_warning_notification">Show library update error notification</string>
@@ -984,6 +984,7 @@
     <string name="backup_next_in">In %s</string>
     <string name="success">Success</string>
     <string name="failed">Failed</string>
+    <string name="all_read_entries">All read entries</string>
 
     <string name="option_label_library_update_errors">Library update errors</string>
     <string name="label_library_update_errors">Library update errors (%d)</string>

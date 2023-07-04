@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import com.hippo.unifile.UniFile
 import eu.kanade.domain.chapter.model.copyFrom
-import eu.kanade.domain.manga.model.copyFrom
 import eu.kanade.tachiyomi.R
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_CATEGORY
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_CATEGORY_MASK
@@ -13,6 +12,8 @@ import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_CHAPTER
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_CHAPTER_MASK
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_HISTORY
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_HISTORY_MASK
+import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_READ_MANGA
+import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_READ_MANGA_MASK
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_TRACK
 import eu.kanade.tachiyomi.data.backup.BackupConst.BACKUP_TRACK_MASK
 import eu.kanade.tachiyomi.data.backup.models.Backup
@@ -43,6 +44,7 @@ import tachiyomi.domain.category.model.Category
 import tachiyomi.domain.history.model.HistoryUpdate
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.domain.manga.interactor.GetFavorites
+import tachiyomi.domain.manga.interactor.GetFavoritesAndReadMangaNotInLibrary
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.source.service.SourceManager
 import uy.kohesive.injekt.Injekt
@@ -61,6 +63,7 @@ class BackupManager(
     private val libraryPreferences: LibraryPreferences = Injekt.get()
     private val getCategories: GetCategories = Injekt.get()
     private val getFavorites: GetFavorites = Injekt.get()
+    private val getFavoritesAndReadMangaNotInLibrary: GetFavoritesAndReadMangaNotInLibrary = Injekt.get()
 
     internal val parser = ProtoBuf
 
@@ -76,7 +79,12 @@ class BackupManager(
             throw IllegalStateException(context.getString(R.string.missing_storage_permission))
         }
 
-        val databaseManga = getFavorites.await()
+        val databaseManga = if (flags and BACKUP_READ_MANGA_MASK == BACKUP_READ_MANGA) {
+            getFavoritesAndReadMangaNotInLibrary.await()
+        } else {
+            getFavorites.await()
+        }
+
         val backup = Backup(
             backupMangas(databaseManga, flags),
             backupCategories(flags),
