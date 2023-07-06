@@ -3,7 +3,6 @@ package eu.kanade.presentation.libraryUpdateError.components
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
@@ -23,6 +22,7 @@ import tachiyomi.domain.libraryUpdateError.model.LibraryUpdateErrorWithRelations
 import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.presentation.core.components.ListGroupHeader
 import tachiyomi.presentation.core.components.material.padding
+import tachiyomi.presentation.core.util.secondaryItemAlpha
 import tachiyomi.presentation.core.util.selectedBackground
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
@@ -111,37 +111,36 @@ private fun LibraryUpdateErrorUiItem(
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 },
             )
-            .height(56.dp)
             .padding(horizontal = MaterialTheme.padding.medium),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
     ) {
         MangaCover.Square(
             modifier = Modifier
                 .padding(vertical = 6.dp)
-                .fillMaxHeight(),
+                .height(48.dp),
             data = error.mangaCover,
             onClick = onClickCover,
         )
 
         Column(
             modifier = Modifier
-                .padding(horizontal = MaterialTheme.padding.medium)
+                .padding(horizontal = MaterialTheme.padding.medium, vertical = 5.dp)
                 .weight(1f),
         ) {
             Text(
                 text = error.mangaTitle,
                 style = MaterialTheme.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Visible,
             )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = Injekt.get<SourceManager>().getOrStub(error.mangaSource).name,
                     style = MaterialTheme.typography.bodySmall,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Visible,
                     maxLines = 1,
                     modifier = Modifier
+                        .secondaryItemAlpha()
                         .weight(weight = 1f, fill = false),
                 )
             }
