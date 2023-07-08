@@ -127,6 +127,23 @@ class LibraryUpdateNotifier(private val context: Context) {
         }
     }
 
+    fun showUpdateErrorNotification(failed: Int) {
+        if (failed == 0) {
+            return
+        }
+
+        context.notify(
+            Notifications.ID_LIBRARY_ERROR,
+            Notifications.CHANNEL_LIBRARY_ERROR,
+        ) {
+            setContentTitle(context.resources.getString(R.string.notification_update_error, failed))
+            setContentText(context.getString(R.string.action_show_errors))
+            setSmallIcon(R.drawable.ic_tachi_x)
+
+            setContentIntent(NotificationReceiver.openErrorLogPendingActivity(context))
+        }
+    }
+
     /**
      * Shows notification containing update entries that were skipped.
      *

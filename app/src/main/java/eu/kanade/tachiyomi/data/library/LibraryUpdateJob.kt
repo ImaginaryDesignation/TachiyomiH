@@ -33,7 +33,6 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.model.UpdateStrategy
 import eu.kanade.tachiyomi.util.prepUpdateCover
 import eu.kanade.tachiyomi.util.shouldDownloadNewChapters
-import eu.kanade.tachiyomi.util.storage.getUriCompat
 import eu.kanade.tachiyomi.util.system.createFileInCacheDir
 import eu.kanade.tachiyomi.util.system.isConnectedToWifi
 import eu.kanade.tachiyomi.util.system.isRunning
@@ -325,7 +324,7 @@ class LibraryUpdateJob(private val context: Context, workerParams: WorkerParamet
             if (libraryPreferences.showLibraryUpdateErrorNotification().get()) {
                 notifier.showUpdateErrorNotification(
                     failedUpdates.size,
-                    errorFile.getUriCompat(context),
+//                    errorFile.getUriCompat(context),
                 )
             }
         }
