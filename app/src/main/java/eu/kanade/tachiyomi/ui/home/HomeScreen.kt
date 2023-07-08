@@ -88,13 +88,7 @@ object HomeScreen : Screen() {
             Injekt.get<UiPreferences>().showBottomNavLabels().asState(scope)
         }
         TabNavigator(
-            tab = when (preferences.startScreen().get()) {
-                "0" -> LibraryTab
-                "1" -> UpdatesTab
-                "2" -> HistoryTab
-                "3" -> BrowseTab(false)
-                else -> LibraryTab
-            },
+            tab = getStartScreen(preferences.startScreen().get()),
         ) { tabNavigator ->
             // Provide usable navigator to content screen
             CompositionLocalProvider(LocalNavigator provides navigator) {
@@ -153,9 +147,10 @@ object HomeScreen : Screen() {
             }
 
             val goToLibraryTab = { tabNavigator.current = LibraryTab }
+            val goToStartScreen = { tabNavigator.current = getStartScreen(preferences.startScreen().get()) }
             BackHandler(
-                enabled = tabNavigator.current != LibraryTab,
-                onBack = goToLibraryTab,
+                enabled = tabNavigator.current != getStartScreen(preferences.startScreen().get()),
+                onBack = goToStartScreen,
             )
 
             LaunchedEffect(Unit) {
@@ -184,6 +179,16 @@ object HomeScreen : Screen() {
                     }
                 }
             }
+        }
+    }
+
+    private fun getStartScreen(startScreen: String): eu.kanade.presentation.util.Tab {
+        return when (startScreen) {
+            "0" -> LibraryTab
+            "1" -> UpdatesTab
+            "2" -> HistoryTab
+            "3" -> BrowseTab(false)
+            else -> LibraryTab
         }
     }
 
