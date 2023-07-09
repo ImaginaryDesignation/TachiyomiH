@@ -138,7 +138,7 @@ class LibraryUpdateNotifier(private val context: Context) {
         ) {
             setContentTitle(context.resources.getString(R.string.notification_update_error, failed))
             setContentText(context.getString(R.string.action_show_errors))
-            setSmallIcon(R.drawable.ic_tachi_x)
+            setSmallIcon(R.drawable.ic_tachi_h)
 
             setContentIntent(NotificationReceiver.openErrorLogPendingActivity(context))
         }
